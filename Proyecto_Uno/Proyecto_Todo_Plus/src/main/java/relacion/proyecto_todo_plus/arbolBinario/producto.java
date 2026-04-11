@@ -1,29 +1,38 @@
 package relacion.proyecto_todo_plus.arbolBinario;
 
 public class producto {
-
+    int codigo;
     String nombre;
     String descripcion;
     double precio;
     String color;
-    String categoría;
+    String categoria;
     String marca; 
 
     public producto() {
     }
 
-    public producto(String nombre, String descripcion, double precio, String color, String categoría, String marca) {
+    public producto(int codigo, String nombre, String descripcion, double precio, String color, String categoria, String marca) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.color = color;
-        this.categoría = categoría;
+        this.categoria = categoria;
         this.marca = marca;
     }
 
     @Override
     public String toString() {
-        return "producto{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", color=" + color + ", categor\u00eda=" + categoría + ", marca=" + marca + '}';
+        return codigo + "|" + nombre + "|" + descripcion + "|" + precio + "|" + color + "|" + categoria + "|" + marca;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -58,12 +67,12 @@ public class producto {
         this.color = color;
     }
 
-    public String getCategoría() {
-        return categoría;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setCategoría(String categoría) {
-        this.categoría = categoría;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getMarca() {
@@ -73,5 +82,5 @@ public class producto {
     public void setMarca(String marca) {
         this.marca = marca;
     }
-  
+    
 }
