@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PersistenciaDAO {
+public class persistenciaDAO {
 
     //metodo para insertar un producto 
     public boolean insertar(producto p) {

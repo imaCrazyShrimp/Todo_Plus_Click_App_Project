@@ -10,7 +10,6 @@ package relacion.proyecto_todo_plus.arbolBinario;
  */
 public class Nodo {
     protected producto prod;
-
     protected Nodo izq;
     protected Nodo dcha;
 
