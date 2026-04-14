@@ -13,10 +13,13 @@ public class Nodo {
     protected Nodo izq;
     protected Nodo dcha;
 
+    protected int altura; // para conocer la altura del arbol
+
     public Nodo(Nodo rma_izq, producto mi_prod, Nodo rma_dcha) {
         this.prod = mi_prod;
         this.izq = rma_izq;
         this.dcha = rma_dcha;
+        this.altura = 1;
     }
 
     public producto getProd() {
@@ -31,6 +34,10 @@ public class Nodo {
         return dcha;
     }
 
+    public int getAltura() {
+        return altura;
+    }
+
     public void setProd(producto prod) {
         this.prod = prod;
     }
@@ -43,5 +50,8 @@ public class Nodo {
         this.dcha = dcha;
     }
 
+    public void setAltura(int altura) {
+        this.altura = altura;
+    }
  
 }
