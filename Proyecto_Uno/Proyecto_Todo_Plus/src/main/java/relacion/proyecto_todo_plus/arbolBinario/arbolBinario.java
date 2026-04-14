@@ -14,39 +14,27 @@ public class arbolBinario {
 
     // metodo de insercion
     public Nodo insertar(producto nuevoProducto) {
-        Nodo nuevoNodo = new Nodo(null, nuevoProducto, null );
-        
-        if (raiz == null) {
-            raiz = nuevoNodo;
-            return raiz;
+        raiz = insertarRecursivo(raiz, nuevoProducto);
+        return raiz;
+    }   
+    
+    private Nodo insertarRecursivo(Nodo nodo, producto p) {
+        // insercion BTS
+        if (nodo == null) {
+            return new Nodo(null, p, null);
         }
 
-        Nodo actual = raiz; // comezamos recorrido desde la raiz
-
-        while (true) {
-
-            // viajamos por la izquierda
-            if (nuevoNodo.getProd().getCodigo() < actual.getProd().getCodigo()) {
-                
-                if (actual.getIzq() == null) {
-                    actual.setIzq(nuevoNodo);
-                    return nuevoNodo;
-                }
-
-                actual = actual.getIzq();
-            } else if (nuevoNodo.getProd().getCodigo() > actual.getProd().getCodigo()) { // seguimos por la dcha
-
-                if (actual.getDcha() == null) {
-                    actual.setDcha(nuevoNodo);
-                    return nuevoNodo;
-                }
-
-                actual = actual.getDcha();
-            } else {
-                return null; //producto cono ese id ya existe!
-            }
+        if (p.getCodigo() < nodo.getProd().getCodigo()) {
+            nodo.setIzq(insertarRecursivo(nodo.getIzq(), p));
+        } else if (p.getCodigo() > nodo.getProd().getCodigo()) {
+            nodo.setDcha(insertarRecursivo(nodo.getDcha(), p));
+        } else {
+            return nodo;
         }
-    }    
+
+        //balancear despues de insertar
+        return balancear(nodo);
+    }
 
     // Recorridos
     
@@ -105,24 +93,30 @@ public class arbolBinario {
         return encontrado;
     }
 
-    // Eliminar un Nodo
-    public Nodo eliminarNodo(Nodo aux, int codigo) {
-        if (raiz == null) return null;
+    // Eliminar un nodo con AVL
+    public void eliminarNodo(int codigo) {
+        raiz = eliminarRecursivo(raiz, codigo);
 
-        if (codigo < raiz.getProd().getCodigo()) {
-            raiz.izq = eliminarNodo(raiz.getIzq(), codigo);
-        } else if (codigo > raiz.getProd().getCodigo()) {
-            raiz.dcha = eliminarNodo(raiz.getDcha(), codigo);
+    }
+
+    public Nodo eliminarRecursivo(Nodo nodo, int codigo) {
+        if (nodo == null) return null;
+
+        if (codigo < nodo.getProd().getCodigo()) {
+            nodo.setIzq(eliminarRecursivo(nodo.getIzq(), codigo));
+        } else if (codigo > nodo.getProd().getCodigo()) {
+            nodo.setDcha(eliminarRecursivo(nodo.getDcha(), codigo));
         } else {
-            if (raiz.izq == null) return raiz.getIzq();
-            if (raiz.dcha == null) return raiz.getIzq();
-
-            raiz.prod.codigo = encontrarMin(raiz.getDcha());
-            raiz.dcha = eliminarNodo(raiz.dcha, raiz.getProd().getCodigo());
+            if (nodo.getIzq() == null) return nodo.getIzq();
+            if (nodo.getDcha() == null) return nodo.getDcha();   
+        
+            int minCodigo = encontrarMin(nodo.getDcha());
+            producto minProducto = buscarPorCodigo(nodo.getDcha(), minCodigo);
+            nodo.setProd(minProducto);
+            nodo.setDcha(eliminarRecursivo(nodo.getDcha(), minCodigo));
         }
 
-        return raiz;
-
+        return balancear(nodo);
     }
 
     private int encontrarMin(Nodo nodo) {
@@ -132,6 +126,15 @@ public class arbolBinario {
             nodo = nodo.izq;
         }
         return min;
+    }
+
+    private producto buscarPorCodigo(Nodo nodo, int codigo) {
+        if (nodo == null) return null;
+        if (nodo.getProd().getCodigo() == codigo) return nodo.getProd();
+        if (codigo < nodo.getProd().getCodigo()) {
+            return buscarPorCodigo(nodo.getIzq(), codigo);
+        }
+        return buscarPorCodigo(nodo.getDcha(), codigo);
     }
 
     // Editar info
@@ -158,4 +161,98 @@ public class arbolBinario {
 
         return encontrado;
     }
+
+    // Metodos AVL
+
+    // obtener altura de nodo
+    private int getaAlturaNodo(Nodo nodo) { // BORRAR ESTA COMMENTARIO: alura -> getAltura
+        if (nodo == null) return 0;
+        return nodo.getAltura();
+    }
+
+    //actualizar altura en base a los hijos
+    private void actualizarAltura(Nodo nodo) {
+        int alturaIzq = getaAlturaNodo(nodo.getIzq()); //altura -> getaAltura
+        int alturaDcha = getaAlturaNodo(nodo.getDcha());
+        if (alturaIzq > alturaDcha) {
+            nodo.setAltura(1 + alturaIzq);
+        } else {
+            nodo.setAltura(1 + alturaDcha);
+        }
+    }
+
+    // Factor de Estabilidad: izq - dcha
+    private int calcularFE(Nodo nodo) {
+        if (nodo == null) return 0;
+       return getaAlturaNodo(nodo.getIzq()) - getaAlturaNodo(nodo.getDcha());
+    }
+
+    // ROTACIONES
+
+    // Simple dcha
+    private Nodo rotarDerecha(Nodo y) {
+        Nodo x = y.getIzq();
+        Nodo T2 = x.getDcha();
+        x.setDcha(y);
+        y.setIzq(T2);
+
+        actualizarAltura(y);
+        actualizarAltura(x);
+        
+        return x;
+    }
+
+    // simple izq
+    private Nodo rotarIzquierda(Nodo x) {
+        Nodo y = x.getDcha();
+        Nodo T2 = y.getIzq();
+
+        y.setIzq(x);
+        x.setDcha(T2);
+
+        actualizarAltura(x);
+        actualizarAltura(y);
+
+        return y;
+    }
+
+    // doble izquierda a derecha
+    private Nodo rotarIzquierda_Derecha(Nodo nodo) {
+        nodo.setIzq(rotarIzquierda(nodo.getIzq()));
+        return rotarDerecha(nodo);
+    }
+
+    // doble derecha a izquierda
+    private Nodo rotarDerecha_Izquierda(Nodo nodo) {
+        nodo.setDcha(rotarDerecha(nodo.getDcha()));
+        return rotarIzquierda(nodo);
+    }
+
+    // Utilizar FE para determinar tipo de rotacion
+    private Nodo balancear(Nodo nodo) {
+        actualizarAltura(nodo);
+        int estabilidad = calcularFE(nodo);
+
+        // desbalance a la izquierda
+        if (estabilidad == 2) {
+            if (calcularFE(nodo.getIzq()) >= 0) {
+                return rotarDerecha(nodo);
+            }
+        } else {
+            return rotarIzquierda_Derecha(nodo);
+        }
+
+        // desbalance a la derecha
+        if (estabilidad == -2) {
+            if (calcularFE(nodo.getDcha()) <= 0) {
+                return rotarIzquierda(nodo);
+            } else {
+                return rotarDerecha_Izquierda(nodo);
+            }
+        }
+
+        return nodo;
+    }
+
+        
 }
