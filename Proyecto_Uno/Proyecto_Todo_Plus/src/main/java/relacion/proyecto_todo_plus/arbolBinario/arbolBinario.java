@@ -1,13 +1,14 @@
 package relacion.proyecto_todo_plus.arbolBinario;
 
 public class arbolBinario {
+
     protected Nodo raiz;
 
     // constructor
     public arbolBinario() {
         this.raiz = null;
     }
-     
+
     public Nodo getRaiz() {
         return raiz;
     }
@@ -16,8 +17,8 @@ public class arbolBinario {
     public Nodo insertar(producto nuevoProducto) {
         raiz = insertarRecursivo(raiz, nuevoProducto);
         return raiz;
-    }   
-    
+    }
+
     private Nodo insertarRecursivo(Nodo nodo, producto p) {
         // insercion BTS
         if (nodo == null) {
@@ -31,38 +32,44 @@ public class arbolBinario {
         } else {
             return nodo;
         }
-
+        actualizarAltura(nodo);
         //balancear despues de insertar
         return balancear(nodo);
     }
+    
 
     // Recorridos
-    
     // SE DEBE USAR TXT_AREA Y NO TXT_FIELD PARA IMPRIMIR
     public String getPreorden(Nodo aux) {
-        
-        if (aux == null) return "";
 
-        return aux.getProd().toString() + "\n" + 
-                getPreorden(aux.getIzq()) + 
-                getPreorden(aux.getDcha());
+        if (aux == null) {
+            return "";
+        }
+
+        return aux.getProd().toString() + "\n"
+                + getPreorden(aux.getIzq())
+                + getPreorden(aux.getDcha());
     }
 
     public String getEnorden(Nodo aux) {
-        
-        if (aux == null) return "";
 
-        return getEnorden(aux.getIzq()) +
-                aux.getProd().toString() + "\n" +
-                getEnorden(aux.getDcha());
+        if (aux == null) {
+            return "";
+        }
+
+        return getEnorden(aux.getIzq())
+                + aux.getProd().toString() + "\n"
+                + getEnorden(aux.getDcha());
     }
 
     public String getPostorden(Nodo aux) {
-        if (aux == null) return "";
+        if (aux == null) {
+            return "";
+        }
 
-        return getPostorden(aux.getIzq()) +
-                getPostorden(aux.getDcha()) +
-                aux.getProd().toString() + "\n";
+        return getPostorden(aux.getIzq())
+                + getPostorden(aux.getDcha())
+                + aux.getProd().toString() + "\n";
     }
 
     // Operación de búsqueda
@@ -77,7 +84,9 @@ public class arbolBinario {
     }
 
     protected Nodo buscarNodo(Nodo aux, String producto) {
-        if (aux == null) return null;
+        if (aux == null) {
+            return null;
+        }
 
         producto p = aux.getProd();
         if (p.getNombre().equalsIgnoreCase(producto)) {
@@ -94,43 +103,65 @@ public class arbolBinario {
     }
 
     // Eliminar un nodo con AVL
-    public void eliminarNodo(int codigo) {
+    public void eliminar(int codigo) {
         raiz = eliminarRecursivo(raiz, codigo);
-
     }
 
-    public Nodo eliminarRecursivo(Nodo nodo, int codigo) {
-        if (nodo == null) return null;
+    private Nodo eliminarRecursivo(Nodo nodo, int codigo) {
+        if (nodo == null) {
+            System.out.println("No se encontró el producto con código: " + codigo);
+            return null;
+        }
 
+        // 1. Búsqueda normal de BST
         if (codigo < nodo.getProd().getCodigo()) {
             nodo.setIzq(eliminarRecursivo(nodo.getIzq(), codigo));
         } else if (codigo > nodo.getProd().getCodigo()) {
             nodo.setDcha(eliminarRecursivo(nodo.getDcha(), codigo));
         } else {
-            if (nodo.getIzq() == null) return nodo.getIzq();
-            if (nodo.getDcha() == null) return nodo.getDcha();   
-        
-            int minCodigo = encontrarMin(nodo.getDcha());
-            producto minProducto = buscarPorCodigo(nodo.getDcha(), minCodigo);
-            nodo.setProd(minProducto);
-            nodo.setDcha(eliminarRecursivo(nodo.getDcha(), minCodigo));
+            if ((nodo.getIzq() == null) || (nodo.getDcha() == null)) {
+                Nodo temporal = (nodo.getIzq() != null) ? nodo.getIzq() : nodo.getDcha();
+
+                if (temporal == null) {
+                    nodo = null;
+                } else {
+                    nodo = temporal;
+                }
+            } else {
+                // Buscamos el sucesor inorden 
+                Nodo temp = obtenerNodoMinimo(nodo.getDcha());
+
+                // Copiamos los datos del sucesor al nodo actual
+                nodo.setProd(temp.getProd());
+
+                // Eliminamos el sucesor inorden
+                nodo.setDcha(eliminarRecursivo(nodo.getDcha(), temp.getProd().getCodigo()));
+            }
         }
 
+        if (nodo == null) {
+            return null;
+        }
+        actualizarAltura(nodo);
         return balancear(nodo);
     }
 
-    private int encontrarMin(Nodo nodo) {
-        int min = nodo.getProd().getCodigo();
-        while (nodo.izq != null) {
-            min = nodo.getIzq().getProd().getCodigo();
-            nodo = nodo.izq;
+// Método para encontrar el sucesor
+    private Nodo obtenerNodoMinimo(Nodo nodo) {
+        Nodo actual = nodo;
+        while (actual.getIzq() != null) {
+            actual = actual.getIzq();
         }
-        return min;
+        return actual;
     }
 
-    private producto buscarPorCodigo(Nodo nodo, int codigo) {
-        if (nodo == null) return null;
-        if (nodo.getProd().getCodigo() == codigo) return nodo.getProd();
+    public producto buscarPorCodigo(Nodo nodo, int codigo) {
+        if (nodo == null) {
+            return null;
+        }
+        if (nodo.getProd().getCodigo() == codigo) {
+            return nodo.getProd();
+        }
         if (codigo < nodo.getProd().getCodigo()) {
             return buscarPorCodigo(nodo.getIzq(), codigo);
         }
@@ -138,35 +169,45 @@ public class arbolBinario {
     }
 
     // Editar info
-    public Nodo editarProducto(int codigo, producto mi_Producto, Nodo aux) {
-        if (aux == null) return null;
+    // Método público para ser llamado desde el Main o la Interfaz
+    public void editarProducto(int codigo, producto nuevosDatos) {
+        raiz = editarRecursivo(raiz, codigo, nuevosDatos);
+    }
 
-        producto p = aux.getProd();
-        if (p.getCodigo() == codigo) {
-            aux.getProd().setNombre(mi_Producto.getNombre());
-            aux.getProd().setDescripcion(mi_Producto.getDescripcion());
-            aux.getProd().setPrecio(mi_Producto.getPrecio());
-            aux.getProd().setColor(mi_Producto.getColor());
-            aux.getProd().setCategoria(mi_Producto.getCategoria());
-            aux.getProd().setMarca(mi_Producto.getMarca());
-
-            System.out.println("Cambio realizado");
-            return aux;
+    private Nodo editarRecursivo(Nodo aux, int codigo, producto nuevosDatos) {
+        if (aux == null) {
+            System.out.println("Error: No se encontró el ID " + codigo + " para editar.");
+            return null;
         }
 
-        Nodo encontrado = editarProducto(codigo, mi_Producto, aux.getIzq());
-        if (encontrado == null) {
-            encontrado = editarProducto(codigo, mi_Producto, aux.getDcha());
-        }
+        // Búsqueda binaria eficiente O(log n)
+        if (codigo < aux.getProd().getCodigo()) {
+            aux.setIzq(editarRecursivo(aux.getIzq(), codigo, nuevosDatos));
+        } else if (codigo > aux.getProd().getCodigo()) {
+            aux.setDcha(editarRecursivo(aux.getDcha(), codigo, nuevosDatos));
+        } else {
+            // ¡LO ENCONTRAMOS! 
+            // Actualizamos los atributos del producto existente
+            producto pExistente = aux.getProd();
 
-        return encontrado;
+            pExistente.setNombre(nuevosDatos.getNombre());
+            pExistente.setDescripcion(nuevosDatos.getDescripcion());
+            pExistente.setPrecio(nuevosDatos.getPrecio());
+            pExistente.setColor(nuevosDatos.getColor());
+            pExistente.setCategoria(nuevosDatos.getCategoria());
+            pExistente.setMarca(nuevosDatos.getMarca());
+
+            System.out.println("✅ Nodo con ID " + codigo + " actualizado correctamente en el árbol.");
+        }
+        return aux;
     }
 
     // Metodos AVL
-
     // obtener altura de nodo
     private int getaAlturaNodo(Nodo nodo) { // BORRAR ESTA COMMENTARIO: alura -> getAltura
-        if (nodo == null) return 0;
+        if (nodo == null) {
+            return 0;
+        }
         return nodo.getAltura();
     }
 
@@ -183,12 +224,13 @@ public class arbolBinario {
 
     // Factor de Estabilidad: izq - dcha
     private int calcularFE(Nodo nodo) {
-        if (nodo == null) return 0;
-       return getaAlturaNodo(nodo.getIzq()) - getaAlturaNodo(nodo.getDcha());
+        if (nodo == null) {
+            return 0;
+        }
+        return getaAlturaNodo(nodo.getIzq()) - getaAlturaNodo(nodo.getDcha());
     }
 
     // ROTACIONES
-
     // Simple dcha
     private Nodo rotarDerecha(Nodo y) {
         Nodo x = y.getIzq();
@@ -198,7 +240,7 @@ public class arbolBinario {
 
         actualizarAltura(y);
         actualizarAltura(x);
-        
+
         return x;
     }
 
@@ -230,29 +272,27 @@ public class arbolBinario {
 
     // Utilizar FE para determinar tipo de rotacion
     private Nodo balancear(Nodo nodo) {
-        actualizarAltura(nodo);
         int estabilidad = calcularFE(nodo);
 
-        // desbalance a la izquierda
-        if (estabilidad == 2) {
+        // Desbalance a la izquierda (FE > 1)
+        if (estabilidad > 1) {
             if (calcularFE(nodo.getIzq()) >= 0) {
-                return rotarDerecha(nodo);
+                return rotarDerecha(nodo); // Rotación Simple
+            } else {
+                return rotarIzquierda_Derecha(nodo); // Rotación Doble
             }
-        } else {
-            return rotarIzquierda_Derecha(nodo);
         }
 
-        // desbalance a la derecha
-        if (estabilidad == -2) {
+        // Desbalance a la derecha (FE < -1)
+        if (estabilidad < -1) {
             if (calcularFE(nodo.getDcha()) <= 0) {
-                return rotarIzquierda(nodo);
+                return rotarIzquierda(nodo); // Rotación Simple
             } else {
-                return rotarDerecha_Izquierda(nodo);
+                return rotarDerecha_Izquierda(nodo); // Rotación Doble
             }
         }
 
         return nodo;
     }
 
-        
 }
