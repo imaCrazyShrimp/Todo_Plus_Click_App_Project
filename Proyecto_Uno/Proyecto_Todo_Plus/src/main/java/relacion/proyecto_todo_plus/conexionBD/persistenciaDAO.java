@@ -115,21 +115,56 @@ public class persistenciaDAO {
         }
         return false;
     }
-    
+
     //metodo para eliminar 
-    public boolean eliminar(int codigo){
+    public boolean eliminar(int codigo) {
         String sql = "DELETE FROM productos WHERE codigo=?";
-        try{
+        try {
             Connection con = Conexion.obtenerConexion();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, codigo);
             ps.executeUpdate();
             con.close();
             return true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error al eliminar: " + e.getMessage());
         }
         return false;
     }
-    
+
+    // metodo para buscar por nombre
+    public producto[] buscarPorNombre(String nombre) {
+        String sql = "SELECT * FROM productos WHERE nombre LIKE ?";
+        producto[] lista = new producto[0];
+        try {
+            Connection con = Conexion.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement(sql,
+                    ResultSet.TYPE_SCROLL_SENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+            ps.setString(1, "%" + nombre + "%");
+            ResultSet rs = ps.executeQuery();
+            rs.last();
+            int total = rs.getRow();
+            rs.beforeFirst();
+            lista = new producto[total];
+            int i = 0;
+            while (rs.next()) {
+                lista[i] = new producto(
+                        rs.getInt("codigo"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getDouble("precio"),
+                        rs.getString("color"),
+                        rs.getString("categoria"),
+                        rs.getString("marca")
+                );
+                i++;
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al buscar por nombre: " + e.getMessage());
+        }
+        return lista;
+    }
+
 }
