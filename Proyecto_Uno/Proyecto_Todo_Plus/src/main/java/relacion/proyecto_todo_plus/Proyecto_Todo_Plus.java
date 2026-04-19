@@ -4,13 +4,13 @@
 
 package relacion.proyecto_todo_plus;
 
-/**
- *
- * @author USER
- */
+import relacion.proyecto_todo_plus.Interfaz.Principal;
+
+
 public class Proyecto_Todo_Plus {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        
+        java.awt.EventQueue.invokeLater(() -> new Principal().setVisible(true));
     }
 }
