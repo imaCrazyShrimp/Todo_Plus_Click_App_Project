@@ -197,7 +197,7 @@ public class arbolBinario {
             pExistente.setCategoria(nuevosDatos.getCategoria());
             pExistente.setMarca(nuevosDatos.getMarca());
 
-            System.out.println("✅ Nodo con ID " + codigo + " actualizado correctamente en el árbol.");
+            System.out.println("Nodo con ID " + codigo + " actualizado correctamente en el árbol.");
         }
         return aux;
     }
