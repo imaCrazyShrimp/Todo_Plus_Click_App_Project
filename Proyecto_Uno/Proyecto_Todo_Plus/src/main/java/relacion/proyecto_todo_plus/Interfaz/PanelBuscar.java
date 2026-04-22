@@ -15,6 +15,7 @@ public class PanelBuscar extends javax.swing.JPanel {
      */
     public PanelBuscar() {
         initComponents();
+         jButton1.addActionListener(evt -> buscarProducto());
     }
 
     /**
@@ -29,7 +30,7 @@ public class PanelBuscar extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        textField1 = new java.awt.TextField();
+        textField10 = new java.awt.TextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -43,16 +44,21 @@ public class PanelBuscar extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
+                "CODIGO", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("BUSCAR");
-
-        textField1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textField1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        textField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textField10ActionPerformed(evt);
             }
         });
 
@@ -68,7 +74,7 @@ public class PanelBuscar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(127, 127, 127)
                 .addComponent(jLabel1)
-                .addContainerGap(841, Short.MAX_VALUE))
+                .addContainerGap(962, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(62, 62, 62)
@@ -80,11 +86,11 @@ public class PanelBuscar extends javax.swing.JPanel {
                                     .addComponent(jLabel2))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(166, 166, 166)
-                                    .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(textField10, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGap(37, 37, 37)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(224, Short.MAX_VALUE)))
+                    .addContainerGap(345, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,20 +105,53 @@ public class PanelBuscar extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(45, 45, 45)
-                            .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(24, 24, 24)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(47, 47, 47)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(134, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(208, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField1ActionPerformed
+    private void textField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField10ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textField1ActionPerformed
+    }//GEN-LAST:event_textField10ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+private void buscarProducto() {
+    String texto = textField10.getText().trim();
+    if (texto.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un código.");
+        return;
+    }
+    try {
+        int codigo = Integer.parseInt(texto);
+        relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+            relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+        relacion.proyecto_todo_plus.arbolBinario.producto p =
+            arbol.buscarPorCodigo(arbol.getRaiz(), codigo);
+
+        javax.swing.table.DefaultTableModel model =
+            (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        if (p != null) {
+            model.addRow(new Object[]{
+                p.getCodigo(), p.getNombre(), p.getDescripcion(),
+                p.getPrecio(), p.getColor(), p.getCategoria(), p.getMarca()
+            });
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No se encontró producto con código: " + codigo);
+        }
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "El código debe ser un número entero.");
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -120,6 +159,6 @@ public class PanelBuscar extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private java.awt.TextField textField1;
+    private java.awt.TextField textField10;
     // End of variables declaration//GEN-END:variables
 }

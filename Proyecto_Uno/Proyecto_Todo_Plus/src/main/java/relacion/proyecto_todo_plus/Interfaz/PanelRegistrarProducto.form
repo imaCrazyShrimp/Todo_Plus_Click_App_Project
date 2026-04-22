@@ -29,11 +29,11 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="63" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -87,9 +87,9 @@
                               <Component id="txtNombre" max="32767" attributes="0"/>
                               <Component id="txtDescripcion" max="32767" attributes="0"/>
                               <Component id="txtPrecio" pref="388" max="32767" attributes="0"/>
-                              <Component id="txtColor" pref="388" max="32767" attributes="0"/>
-                              <Component id="txtCategoria" pref="388" max="32767" attributes="0"/>
-                              <Component id="txtMarca" pref="388" max="32767" attributes="0"/>
+                              <Component id="txtColor" max="32767" attributes="0"/>
+                              <Component id="txtCategoria" max="32767" attributes="0"/>
+                              <Component id="txtMarca" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -99,7 +99,7 @@
                           <Component id="jButton2" min="-2" pref="105" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="377" max="32767" attributes="0"/>
+                  <EmptySpace pref="526" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -180,6 +180,9 @@
         <Component class="javax.swing.JTextField" name="txtNombre">
         </Component>
         <Component class="javax.swing.JTextField" name="txtCodigo">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCodigoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>

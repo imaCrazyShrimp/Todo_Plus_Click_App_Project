@@ -15,6 +15,7 @@ public class PanelRegistros extends javax.swing.JPanel {
      */
     public PanelRegistros() {
         initComponents();
+        cargarTabla();
     }
 
     /**
@@ -40,7 +41,7 @@ public class PanelRegistros extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
+                "CODIGO", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -55,10 +56,10 @@ public class PanelRegistros extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(300, 300, 300)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(663, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 413, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -69,7 +70,26 @@ public class PanelRegistros extends javax.swing.JPanel {
                 .addContainerGap(205, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+private void cargarTabla() {
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+    String inorden = arbol.getEnorden(arbol.getRaiz());
+    javax.swing.table.DefaultTableModel model =
+        (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
 
+    if (inorden.isEmpty()) return;
+
+    for (String linea : inorden.split("\n")) {
+        String[] partes = linea.split("\\|");
+        if (partes.length == 7) {
+            model.addRow(new Object[]{
+                Integer.parseInt(partes[0]), partes[1], partes[2],
+                Double.parseDouble(partes[3]), partes[4], partes[5], partes[6]
+            });
+        }
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
