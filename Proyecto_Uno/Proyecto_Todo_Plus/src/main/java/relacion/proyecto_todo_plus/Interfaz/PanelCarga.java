@@ -52,64 +52,85 @@ public class PanelCarga extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
-                        .addComponent(barraProgreso2, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(barraProgreso2, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(306, 306, 306)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btncargar2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(354, Short.MAX_VALUE))
+                        .addGap(256, 256, 256)
+                        .addComponent(btncargar2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(269, 269, 269)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(614, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
+                .addGap(104, 104, 104)
                 .addComponent(btncargar2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(barraProgreso2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncargar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargar2ActionPerformed
-        btncargar2.setEnabled(false); // desactiva botón
+          btncargar2.setEnabled(false);
+    barraProgreso2.setValue(0);
+    barraProgreso2.setStringPainted(true); // muestra el % en la barra
 
-        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+    relacion.proyecto_todo_plus.conexionBD.persistenciaDAO dao =
+        new relacion.proyecto_todo_plus.conexionBD.persistenciaDAO();
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
 
-            @Override
-            protected Void doInBackground() throws Exception {
+    javax.swing.SwingWorker<Void, Integer> worker = new javax.swing.SwingWorker<Void, Integer>() {
 
-                for (int i = 0; i <= 100; i++) {
-                    Thread.sleep(50); // simula proceso
-                    publish(i); // envía progreso
-                }
+        @Override
+        protected Void doInBackground() throws Exception {
+            // 1. Traer todos los productos de la BD
+            relacion.proyecto_todo_plus.arbolBinario.producto[] productos = dao.cargarTodos();
 
+            if (productos.length == 0) {
+                publish(100); // barra llena aunque no haya nada
                 return null;
             }
 
-            @Override
-            protected void process(java.util.List<Integer> chunks) {
-                int valor = chunks.get(chunks.size() - 1);
-                barraProgreso2.setValue(valor);
-            }
+            // 2. Insertar uno por uno en el árbol y publicar progreso
+            for (int i = 0; i < productos.length; i++) {
+                arbol.insertar(productos[i]);
 
-            @Override
-            protected void done() {
-                btncargar2.setEnabled(true);
-                JOptionPane.showMessageDialog(null, "Carga completada");
-            }
-        };
+                // calcula porcentaje real basado en cuántos llevamos
+                int porcentaje = (int) ((i + 1) * 100.0 / productos.length);
+                publish(porcentaje);
 
-        worker.execute(); // TODO add your handling code here:
+                Thread.sleep(40); // pequeña pausa para que se vea el movimiento
+            }
+            return null;
+        }
+
+        @Override
+        protected void process(java.util.List<Integer> chunks) {
+            // chunks puede traer varios valores acumulados, tomamos el último
+            int valor = chunks.get(chunks.size() - 1);
+            barraProgreso2.setValue(valor);
+        }
+
+        @Override
+        protected void done() {
+            btncargar2.setEnabled(true);
+            barraProgreso2.setValue(100);
+            javax.swing.JOptionPane.showMessageDialog(null,
+                "¡Carga completada! Datos en el árbol AVL.");
+        }
+    };
+
+    worker.execute();
     }//GEN-LAST:event_btncargar2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar barraProgreso2;
-    private javax.swing.JButton btncargar;
-    private javax.swing.JButton btncargar1;
     private javax.swing.JButton btncargar2;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

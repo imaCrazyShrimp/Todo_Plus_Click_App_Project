@@ -15,6 +15,7 @@ public class PanelEliminar extends javax.swing.JPanel {
      */
     public PanelEliminar() {
         initComponents();
+         jButton1.addActionListener(evt -> buscarParaEliminar());
     }
 
     /**
@@ -56,7 +57,7 @@ public class PanelEliminar extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
+                "CODIGO", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -93,7 +94,7 @@ public class PanelEliminar extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(424, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,9 +119,62 @@ public class PanelEliminar extends javax.swing.JPanel {
     }//GEN-LAST:event_textField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+         String texto = textField1.getText().trim();
+    if (texto.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "Primero busque un producto."); 
+        return; 
+    }
+    try {
+        int codigo = Integer.parseInt(texto);
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Eliminar el producto con código " + codigo + "?",
+            "Confirmar eliminación", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
 
+        relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+            relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+        relacion.proyecto_todo_plus.conexionBD.persistenciaDAO dao =
+            new relacion.proyecto_todo_plus.conexionBD.persistenciaDAO();
+
+        arbol.eliminar(codigo);
+        dao.eliminar(codigo);
+
+        ((javax.swing.table.DefaultTableModel) jTable1.getModel()).setRowCount(0);
+        textField1.setText("");
+        javax.swing.JOptionPane.showMessageDialog(this, "Producto eliminado del árbol y la BD.");
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Código inválido.");
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
+private void buscarParaEliminar() {
+    String texto = textField1.getText().trim();
+    if (texto.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un código."); 
+        return; 
+    }
+    try {
+        int codigo = Integer.parseInt(texto);
+        relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+            relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+        relacion.proyecto_todo_plus.arbolBinario.producto p =
+            arbol.buscarPorCodigo(arbol.getRaiz(), codigo);
+
+        javax.swing.table.DefaultTableModel model =
+            (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        if (p != null) {
+            model.addRow(new Object[]{
+                p.getCodigo(), p.getNombre(), p.getDescripcion(),
+                p.getPrecio(), p.getColor(), p.getCategoria(), p.getMarca()
+            });
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Producto no encontrado.");
+        }
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Código inválido.");
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

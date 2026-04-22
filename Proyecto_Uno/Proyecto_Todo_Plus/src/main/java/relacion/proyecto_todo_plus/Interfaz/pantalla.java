@@ -41,6 +41,7 @@ grupo.add(jToggleButton8);
         jToggleButton9 = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,6 +51,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton1.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-add-67 (1).png")); // NOI18N
         jToggleButton1.setText("REGISTRAR NUEVO PRODUCTO");
         jToggleButton1.setActionCommand("");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -60,6 +62,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton2.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-edit-pencil-64.png")); // NOI18N
         jToggleButton2.setText("MODIFICAR");
         jToggleButton2.setActionCommand("");
         jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -70,6 +73,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton3.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton3.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-trash-bin-32 (1).png")); // NOI18N
         jToggleButton3.setText("ELIMINAR");
         jToggleButton3.setActionCommand("");
         jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +84,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton4.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton4.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-oak-tree-50.png")); // NOI18N
         jToggleButton4.setText("VISUALIZAR ARBOL");
         jToggleButton4.setActionCommand("");
         jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +95,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton5.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton5.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-database-50.png")); // NOI18N
         jToggleButton5.setText("CARGAR DATOS A BD");
         jToggleButton5.setActionCommand("");
         jToggleButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +106,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton6.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton6.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-save-50.png")); // NOI18N
         jToggleButton6.setText("GUARDAR DATOS A BD");
         jToggleButton6.setActionCommand("");
         jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +117,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton7.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton7.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton7.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-documents-50.png")); // NOI18N
         jToggleButton7.setText("REGISTROS EXISTENTES");
         jToggleButton7.setActionCommand("");
         jToggleButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +128,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton8.setBackground(new java.awt.Color(0, 102, 102));
         jToggleButton8.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton8.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-google-web-search-64.png")); // NOI18N
         jToggleButton8.setText("BUSCAR REGISTROS");
         jToggleButton8.setActionCommand("");
         jToggleButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +139,7 @@ grupo.add(jToggleButton8);
 
         jToggleButton9.setBackground(new java.awt.Color(153, 153, 153));
         jToggleButton9.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButton9.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Downloads\\icons8-close-window-48.png")); // NOI18N
         jToggleButton9.setText("SALIR DEL PROGRAMA");
         jToggleButton9.setActionCommand("");
         jToggleButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -150,7 +160,7 @@ grupo.add(jToggleButton8);
                     .addComponent(jToggleButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jToggleButton9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -160,22 +170,22 @@ grupo.add(jToggleButton8);
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(jToggleButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(516, Short.MAX_VALUE))
@@ -190,6 +200,8 @@ grupo.add(jToggleButton8);
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("BIENVENIDO AL SISTEMA A TODO CLICK");
 
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\50257\\Desktop\\Proyecto1\\Todo_Plus_Click_App_Project\\Proyecto_Uno\\Proyecto_Todo_Plus\\src\\main\\java\\imagenes\\user2.jpeg")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,9 +213,13 @@ grupo.add(jToggleButton8);
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGap(127, 127, 127)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(jLabel2)))))
+                .addContainerGap(314, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +229,9 @@ grupo.add(jToggleButton8);
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -318,6 +336,7 @@ grupo.add(jToggleButton8);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToggleButton jToggleButton1;

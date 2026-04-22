@@ -52,42 +52,93 @@ public class PanelGuardar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(163, 163, 163)
+                        .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(306, 306, 306)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btncargar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(497, Short.MAX_VALUE))
+                        .addGap(484, 484, 484)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(441, 441, 441)
+                        .addComponent(btncargar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(304, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
+                .addGap(101, 101, 101)
                 .addComponent(btncargar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(barraProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(265, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
-        btncargar.setEnabled(false); // desactiva botón
-    
-    SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+       btncargar.setEnabled(false);
+    barraProgreso.setValue(0);
+    barraProgreso.setStringPainted(true);
+
+    relacion.proyecto_todo_plus.conexionBD.persistenciaDAO dao =
+        new relacion.proyecto_todo_plus.conexionBD.persistenciaDAO();
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+
+    // Contar nodos del árbol antes de lanzar el worker
+    final int[] totalNodos = {0};
+    contarNodos(arbol.getRaiz(), totalNodos);
+
+    if (totalNodos[0] == 0) {
+        javax.swing.JOptionPane.showMessageDialog(null,
+            "El árbol está vacío. Cargue datos primero.");
+        btncargar.setEnabled(true);
+        barraProgreso.setValue(0);
+        return;
+    }
+
+    javax.swing.SwingWorker<Void, Integer> worker = new javax.swing.SwingWorker<Void, Integer>() {
+
+        // Contador compartido dentro del worker
+        int procesados = 0;
 
         @Override
         protected Void doInBackground() throws Exception {
-            
-            for (int i = 0; i <= 100; i++) {
-                Thread.sleep(50); // simula proceso
-                publish(i); // envía progreso
+            // Saber qué códigos ya existen en BD
+            relacion.proyecto_todo_plus.arbolBinario.producto[] enBD = dao.cargarTodos();
+            java.util.Set<Integer> codigosEnBD = new java.util.HashSet<>();
+            for (relacion.proyecto_todo_plus.arbolBinario.producto p : enBD) {
+                codigosEnBD.add(p.getCodigo());
             }
-            
+
+            // Recorrer árbol inorden y sincronizar con BD
+            sincronizarNodo(arbol.getRaiz(), dao, codigosEnBD, totalNodos[0]);
             return null;
+        }
+
+        private void sincronizarNodo(
+            relacion.proyecto_todo_plus.arbolBinario.Nodo nodo,
+            relacion.proyecto_todo_plus.conexionBD.persistenciaDAO dao,
+            java.util.Set<Integer> codigosEnBD,
+            int total) throws InterruptedException {
+
+            if (nodo == null) return;
+
+            sincronizarNodo(nodo.getIzq(), dao, codigosEnBD, total);
+
+            relacion.proyecto_todo_plus.arbolBinario.producto p = nodo.getProd();
+            if (codigosEnBD.contains(p.getCodigo())) {
+                dao.editar(p);    // ya existe → actualizar
+            } else {
+                dao.insertar(p);  // nuevo → insertar
+            }
+
+            procesados++;
+            int porcentaje = (int) (procesados * 100.0 / total);
+            publish(porcentaje);
+            Thread.sleep(40); // pausa para que se vea el movimiento
+
+            sincronizarNodo(nodo.getDcha(), dao, codigosEnBD, total);
         }
 
         @Override
@@ -99,11 +150,21 @@ public class PanelGuardar extends javax.swing.JPanel {
         @Override
         protected void done() {
             btncargar.setEnabled(true);
-            JOptionPane.showMessageDialog(null, "Carga completada");
+            barraProgreso.setValue(100);
+            javax.swing.JOptionPane.showMessageDialog(null,
+                "¡Guardado completo! Datos sincronizados en la base de datos.");
         }
     };
 
-    worker.execute(); // TODO add your handling code here:
+    worker.execute();
+}
+
+// Método auxiliar para contar nodos del árbol
+private void contarNodos(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo, int[] contador) {
+    if (nodo == null) return;
+    contador[0]++;
+    contarNodos(nodo.getIzq(), contador);
+    contarNodos(nodo.getDcha(), contador);
     }//GEN-LAST:event_btncargarActionPerformed
 
 

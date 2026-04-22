@@ -15,6 +15,19 @@ public class PanelVisualizar extends javax.swing.JPanel {
      */
     public PanelVisualizar() {
         initComponents();
+        btnInorden.addActionListener(evt -> mostrarRecorrido("INORDEN",
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol()
+            .getEnorden(relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol().getRaiz())));
+
+    btnPreorden.addActionListener(evt -> mostrarRecorrido("PREORDEN",
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol()
+            .getPreorden(relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol().getRaiz())));
+
+    btnPostorden.addActionListener(evt -> mostrarRecorrido("POSTORDEN",
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol()
+            .getPostorden(relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol().getRaiz())));
+
+    btnVerarbol.addActionListener(evt -> verArbol());
     }
 
     /**
@@ -27,10 +40,10 @@ public class PanelVisualizar extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnInorden = new javax.swing.JButton();
+        btnPreorden = new javax.swing.JButton();
+        btnPostorden = new javax.swing.JButton();
+        btnVerarbol = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 255, 255));
 
@@ -38,25 +51,24 @@ public class PanelVisualizar extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("ARBOL CREADO");
 
-        jButton1.setBackground(new java.awt.Color(255, 204, 51));
-        jButton1.setText("INORDEN");
-        jButton1.setActionCommand("INORDEN");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnInorden.setBackground(new java.awt.Color(255, 204, 51));
+        btnInorden.setText("INORDEN");
+        btnInorden.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnInordenActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setText("PREORDEN ");
+        btnPreorden.setBackground(new java.awt.Color(102, 255, 102));
+        btnPreorden.setText("PREORDEN ");
 
-        jButton3.setBackground(new java.awt.Color(0, 255, 153));
-        jButton3.setText("POSTORDEN");
+        btnPostorden.setBackground(new java.awt.Color(0, 255, 153));
+        btnPostorden.setText("POSTORDEN");
 
-        jButton4.setBackground(new java.awt.Color(0, 51, 51));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("VER ARBOL");
+        btnVerarbol.setBackground(new java.awt.Color(0, 51, 51));
+        btnVerarbol.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnVerarbol.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerarbol.setText("VER ARBOL");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -66,46 +78,197 @@ public class PanelVisualizar extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(65, 65, 65)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(116, 116, 116)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(139, 139, 139)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnInorden, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(163, 163, 163)
+                        .addComponent(btnPreorden, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(181, 181, 181)
+                        .addComponent(btnPostorden, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(256, 256, 256)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(344, Short.MAX_VALUE))
+                        .addGap(326, 326, 326)
+                        .addComponent(btnVerarbol, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(316, 316, 316)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(393, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(130, 130, 130)
+                .addGap(125, 125, 125)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(97, 97, 97)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                    .addComponent(btnInorden, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPreorden, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPostorden, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(94, 94, 94)
+                .addComponent(btnVerarbol, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(213, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnInordenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInordenActionPerformed
+       relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+    String resultado = arbol.getEnorden(arbol.getRaiz());
+    mostrarRecorrido("INORDEN", resultado);
+    }//GEN-LAST:event_btnInordenActionPerformed
+private void mostrarRecorrido(String tipo, String contenido) {
+    if (contenido.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "El árbol está vacío. Cargue datos primero.");
+        return;
+    }
+    javax.swing.JTextArea area = new javax.swing.JTextArea(contenido);
+    area.setEditable(false);
+    javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(area);
+    scroll.setPreferredSize(new java.awt.Dimension(500, 400));
+    javax.swing.JOptionPane.showMessageDialog(this, scroll,
+        "Recorrido " + tipo, javax.swing.JOptionPane.PLAIN_MESSAGE);
+}
 
+private void verArbol() {
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+
+    if (arbol.getRaiz() == null) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "El árbol está vacío. Cargue datos primero.");
+        return;
+    }
+
+    // Crear ventana con el panel gráfico
+    javax.swing.JFrame ventana = new javax.swing.JFrame("Árbol AVL - Visualización");
+    ventana.setSize(1000, 700);
+    ventana.setLocationRelativeTo(null);
+    ventana.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+
+    PanelArbol panelArbol = new PanelArbol(arbol.getRaiz());
+    javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(panelArbol);
+    ventana.add(scroll);
+    ventana.setVisible(true);
+}
+
+// ─── Clase interna que dibuja el árbol ───────────────────────────────────────
+private class PanelArbol extends javax.swing.JPanel {
+
+    private relacion.proyecto_todo_plus.arbolBinario.Nodo raiz;
+
+    // Tamaño del círculo de cada nodo
+    private static final int RADIO     = 28;
+    private static final int DIAMETRO  = RADIO * 2;
+
+    public PanelArbol(relacion.proyecto_todo_plus.arbolBinario.Nodo raiz) {
+        this.raiz = raiz;
+        setBackground(new java.awt.Color(240, 255, 255));
+        // Calcular altura para ajustar tamaño del panel
+        int altura = calcularAltura(raiz);
+        int anchoPanel = (int) Math.pow(2, altura) * (DIAMETRO + 20);
+        int altoPanel  = altura * 100 + 80;
+        setPreferredSize(new java.awt.Dimension(
+            Math.max(anchoPanel, 800),
+            Math.max(altoPanel, 400)
+        ));
+    }
+
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+        // Antialiasing para que se vea suave
+        g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                            java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if (raiz != null) {
+            dibujarNodo(g2, raiz, getWidth() / 2, 50, getWidth() / 4);
+        }
+    }
+
+    private void dibujarNodo(java.awt.Graphics2D g,
+                             relacion.proyecto_todo_plus.arbolBinario.Nodo nodo,
+                             int x, int y, int offset) {
+        if (nodo == null) return;
+
+        int siguienteY = y + 90;
+
+        // Dibujar línea al hijo izquierdo
+        if (nodo.getIzq() != null) {
+            g.setColor(new java.awt.Color(100, 100, 100));
+            g.setStroke(new java.awt.BasicStroke(2));
+            g.drawLine(x, y, x - offset, siguienteY);
+            dibujarNodo(g, nodo.getIzq(), x - offset, siguienteY, offset / 2);
+        }
+
+        // Dibujar línea al hijo derecho
+        if (nodo.getDcha() != null) {
+            g.setColor(new java.awt.Color(100, 100, 100));
+            g.setStroke(new java.awt.BasicStroke(2));
+            g.drawLine(x, y, x + offset, siguienteY);
+            dibujarNodo(g, nodo.getDcha(), x + offset, siguienteY, offset / 2);
+        }
+
+        // Color del nodo según balance
+        int fe = calcularFE(nodo);
+        java.awt.Color colorNodo;
+        if (fe == 0) {
+            colorNodo = new java.awt.Color(0, 180, 100);      // verde = perfectamente balanceado
+        } else if (Math.abs(fe) == 1) {
+            colorNodo = new java.awt.Color(30, 120, 220);     // azul = ligeramente desbalanceado
+        } else {
+            colorNodo = new java.awt.Color(220, 50, 50);      // rojo = desbalanceado (no debería pasar en AVL)
+        }
+
+        // Sombra
+        g.setColor(new java.awt.Color(0, 0, 0, 50));
+        g.fillOval(x - RADIO + 3, y - RADIO + 3, DIAMETRO, DIAMETRO);
+
+        // Círculo del nodo
+        g.setColor(colorNodo);
+        g.fillOval(x - RADIO, y - RADIO, DIAMETRO, DIAMETRO);
+
+        // Borde del círculo
+        g.setColor(java.awt.Color.WHITE);
+        g.setStroke(new java.awt.BasicStroke(2));
+        g.drawOval(x - RADIO, y - RADIO, DIAMETRO, DIAMETRO);
+
+        // Código del producto dentro del círculo
+        g.setColor(java.awt.Color.WHITE);
+        g.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
+        String texto = String.valueOf(nodo.getProd().getCodigo());
+        java.awt.FontMetrics fm = g.getFontMetrics();
+        int textoX = x - fm.stringWidth(texto) / 2;
+        int textoY = y + fm.getAscent() / 2 - 1;
+        g.drawString(texto, textoX, textoY);
+
+        // Factor de equilibrio debajo del círculo (pequeño)
+        g.setColor(new java.awt.Color(60, 60, 60));
+        g.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 10));
+        String fe_texto = "FE:" + fe;
+        int feX = x - fm.stringWidth(fe_texto) / 2;
+        g.drawString(fe_texto, feX, y + RADIO + 14);
+    }
+
+    // Calcula el factor de equilibrio de un nodo
+   private int calcularFE(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo) {
+    return alturaDeNodo(nodo.getDcha()) - alturaDeNodo(nodo.getIzq());
+}
+
+    private int alturaDeNodo(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo) {
+        if (nodo == null) return 0;
+        return nodo.getAltura();
+    }
+
+    private int calcularAltura(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo) {
+        if (nodo == null) return 0;
+        return 1 + Math.max(calcularAltura(nodo.getIzq()), calcularAltura(nodo.getDcha()));
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnInorden;
+    private javax.swing.JButton btnPostorden;
+    private javax.swing.JButton btnPreorden;
+    private javax.swing.JButton btnVerarbol;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

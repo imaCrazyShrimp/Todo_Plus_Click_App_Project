@@ -15,6 +15,7 @@ public class PanelModificar extends javax.swing.JPanel {
      */
     public PanelModificar() {
         initComponents();
+        jButton1.addActionListener(evt -> buscarParaEditar());
     }
 
     /**
@@ -55,7 +56,7 @@ public class PanelModificar extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
+                "CODIGO", "NOMBRE", "DESCRIPCION", "PRECIO", "COLOR", "CATEGORIA", "MARCA"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -92,7 +93,7 @@ public class PanelModificar extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(430, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,9 +118,74 @@ public class PanelModificar extends javax.swing.JPanel {
     }//GEN-LAST:event_textField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        // Pedir nuevos datos por diálogos simples
+    String nombre = textField1.getText().trim();
+    if (nombre.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "Primero busque un producto."); 
+        return; 
+    }
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+    relacion.proyecto_todo_plus.arbolBinario.producto p =
+        arbol.buscaProducto(arbol.getRaiz(), nombre);
+    if (p == null) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "Producto no encontrado."); 
+        return; 
+    }
 
+    String nuevoNombre = javax.swing.JOptionPane.showInputDialog(this, "Nuevo nombre:", p.getNombre());
+    if (nuevoNombre == null) return;
+    String nuevaDesc = javax.swing.JOptionPane.showInputDialog(this, "Nueva descripción:", p.getDescripcion());
+    if (nuevaDesc == null) return;
+    String precioStr = javax.swing.JOptionPane.showInputDialog(this, "Nuevo precio:", p.getPrecio());
+    if (precioStr == null) return;
+    String nuevoColor = javax.swing.JOptionPane.showInputDialog(this, "Nuevo color:", p.getColor());
+    if (nuevoColor == null) return;
+    String nuevaCategoria = javax.swing.JOptionPane.showInputDialog(this, "Nueva categoría:", p.getCategoria());
+    if (nuevaCategoria == null) return;
+    String nuevaMarca = javax.swing.JOptionPane.showInputDialog(this, "Nueva marca:", p.getMarca());
+    if (nuevaMarca == null) return;
+
+    try {
+        double nuevoPrecio = Double.parseDouble(precioStr);
+        relacion.proyecto_todo_plus.arbolBinario.producto nuevoDato =
+            new relacion.proyecto_todo_plus.arbolBinario.producto(
+                p.getCodigo(), nuevoNombre, nuevaDesc, nuevoPrecio, nuevoColor, nuevaCategoria, nuevaMarca);
+
+        arbol.editarProducto(p.getCodigo(), nuevoDato);
+        new relacion.proyecto_todo_plus.conexionBD.persistenciaDAO().editar(nuevoDato);
+
+        ((javax.swing.table.DefaultTableModel) jTable1.getModel()).setRowCount(0);
+        textField1.setText("");
+        javax.swing.JOptionPane.showMessageDialog(this, "Producto modificado correctamente.");
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "El precio debe ser un número.");
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buscarParaEditar() {
+        String nombre = textField1.getText().trim();
+    if (nombre.isEmpty()) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un nombre."); 
+        return; 
+    }
+    relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
+        relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
+    relacion.proyecto_todo_plus.arbolBinario.producto p =
+        arbol.buscaProducto(arbol.getRaiz(), nombre);
+
+    javax.swing.table.DefaultTableModel model =
+        (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    if (p != null) {
+        model.addRow(new Object[]{
+            p.getCodigo(), p.getNombre(), p.getDescripcion(),
+            p.getPrecio(), p.getColor(), p.getCategoria(), p.getMarca()
+        });
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Producto no encontrado.");
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
