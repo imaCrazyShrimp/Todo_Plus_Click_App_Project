@@ -4,7 +4,6 @@ public class arbolBinario {
 
     protected Nodo raiz;
 
-    // constructor
     public arbolBinario() {
         this.raiz = null;
     }
@@ -13,14 +12,12 @@ public class arbolBinario {
         return raiz;
     }
 
-    // metodo de insercion
     public Nodo insertar(producto nuevoProducto) {
         raiz = insertarRecursivo(raiz, nuevoProducto);
         return raiz;
     }
 
     private Nodo insertarRecursivo(Nodo nodo, producto p) {
-        // insercion BTS
         if (nodo == null) {
             return new Nodo(null, p, null);
         }
@@ -33,13 +30,10 @@ public class arbolBinario {
             return nodo;
         }
         actualizarAltura(nodo);
-        //balancear despues de insertar
         return balancear(nodo);
     }
     
 
-    // Recorridos
-    // SE DEBE USAR TXT_AREA Y NO TXT_FIELD PARA IMPRIMIR
     public String getPreorden(Nodo aux) {
 
         if (aux == null) {
@@ -72,7 +66,6 @@ public class arbolBinario {
                 + aux.getProd().toString() + "\n";
     }
 
-    // Operación de búsqueda
     public producto buscaProducto(Nodo aux, String nombreProd) {
         Nodo resultado = buscarNodo(aux, nombreProd);
 
@@ -93,16 +86,13 @@ public class arbolBinario {
             return aux;
         }
 
-        // buscar hacia la izq del arbol    
         Nodo encontrado = buscarNodo(aux.getIzq(), producto);
         if (encontrado == null) {
-            // buscar hacia la dcha del arbol
             encontrado = buscarNodo(aux.getDcha(), producto);
         }
         return encontrado;
     }
 
-    // Eliminar un nodo con AVL
     public void eliminar(int codigo) {
         raiz = eliminarRecursivo(raiz, codigo);
     }
@@ -113,7 +103,6 @@ public class arbolBinario {
             return null;
         }
 
-        // 1. Búsqueda normal de BST
         if (codigo < nodo.getProd().getCodigo()) {
             nodo.setIzq(eliminarRecursivo(nodo.getIzq(), codigo));
         } else if (codigo > nodo.getProd().getCodigo()) {
@@ -128,13 +117,10 @@ public class arbolBinario {
                     nodo = temporal;
                 }
             } else {
-                // Buscamos el sucesor inorden 
                 Nodo temp = obtenerNodoMinimo(nodo.getDcha());
 
-                // Copiamos los datos del sucesor al nodo actual
                 nodo.setProd(temp.getProd());
 
-                // Eliminamos el sucesor inorden
                 nodo.setDcha(eliminarRecursivo(nodo.getDcha(), temp.getProd().getCodigo()));
             }
         }
@@ -146,7 +132,6 @@ public class arbolBinario {
         return balancear(nodo);
     }
 
-// Método para encontrar el sucesor
     private Nodo obtenerNodoMinimo(Nodo nodo) {
         Nodo actual = nodo;
         while (actual.getIzq() != null) {
@@ -168,8 +153,6 @@ public class arbolBinario {
         return buscarPorCodigo(nodo.getDcha(), codigo);
     }
 
-    // Editar info
-    // Método público para ser llamado desde el Main o la Interfaz
     public void editarProducto(int codigo, producto nuevosDatos) {
         raiz = editarRecursivo(raiz, codigo, nuevosDatos);
     }
@@ -180,14 +163,11 @@ public class arbolBinario {
             return null;
         }
 
-        // Búsqueda binaria eficiente O(log n)
         if (codigo < aux.getProd().getCodigo()) {
             aux.setIzq(editarRecursivo(aux.getIzq(), codigo, nuevosDatos));
         } else if (codigo > aux.getProd().getCodigo()) {
             aux.setDcha(editarRecursivo(aux.getDcha(), codigo, nuevosDatos));
         } else {
-            // ¡LO ENCONTRAMOS! 
-            // Actualizamos los atributos del producto existente
             producto pExistente = aux.getProd();
 
             pExistente.setNombre(nuevosDatos.getNombre());
@@ -202,18 +182,15 @@ public class arbolBinario {
         return aux;
     }
 
-    // Metodos AVL
-    // obtener altura de nodo
-    private int getaAlturaNodo(Nodo nodo) { // BORRAR ESTA COMMENTARIO: alura -> getAltura
+    private int getaAlturaNodo(Nodo nodo) { 
         if (nodo == null) {
             return 0;
         }
         return nodo.getAltura();
     }
 
-    //actualizar altura en base a los hijos
     private void actualizarAltura(Nodo nodo) {
-        int alturaIzq = getaAlturaNodo(nodo.getIzq()); //altura -> getaAltura
+        int alturaIzq = getaAlturaNodo(nodo.getIzq()); 
         int alturaDcha = getaAlturaNodo(nodo.getDcha());
         if (alturaIzq > alturaDcha) {
             nodo.setAltura(1 + alturaIzq);
@@ -222,7 +199,6 @@ public class arbolBinario {
         }
     }
 
-    // Factor de Estabilidad: izq - dcha
     private int calcularFE(Nodo nodo) {
         if (nodo == null) {
             return 0;
@@ -230,8 +206,6 @@ public class arbolBinario {
         return getaAlturaNodo(nodo.getIzq()) - getaAlturaNodo(nodo.getDcha());
     }
 
-    // ROTACIONES
-    // Simple dcha
     private Nodo rotarDerecha(Nodo y) {
         Nodo x = y.getIzq();
         Nodo T2 = x.getDcha();
@@ -244,7 +218,6 @@ public class arbolBinario {
         return x;
     }
 
-    // simple izq
     private Nodo rotarIzquierda(Nodo x) {
         Nodo y = x.getDcha();
         Nodo T2 = y.getIzq();
@@ -258,37 +231,32 @@ public class arbolBinario {
         return y;
     }
 
-    // doble izquierda a derecha
     private Nodo rotarIzquierda_Derecha(Nodo nodo) {
         nodo.setIzq(rotarIzquierda(nodo.getIzq()));
         return rotarDerecha(nodo);
     }
 
-    // doble derecha a izquierda
     private Nodo rotarDerecha_Izquierda(Nodo nodo) {
         nodo.setDcha(rotarDerecha(nodo.getDcha()));
         return rotarIzquierda(nodo);
     }
 
-    // Utilizar FE para determinar tipo de rotacion
     private Nodo balancear(Nodo nodo) {
         int estabilidad = calcularFE(nodo);
 
-        // Desbalance a la izquierda (FE > 1)
         if (estabilidad > 1) {
             if (calcularFE(nodo.getIzq()) >= 0) {
-                return rotarDerecha(nodo); // Rotación Simple
+                return rotarDerecha(nodo); 
             } else {
-                return rotarIzquierda_Derecha(nodo); // Rotación Doble
+                return rotarIzquierda_Derecha(nodo);
             }
         }
 
-        // Desbalance a la derecha (FE < -1)
         if (estabilidad < -1) {
             if (calcularFE(nodo.getDcha()) <= 0) {
-                return rotarIzquierda(nodo); // Rotación Simple
+                return rotarIzquierda(nodo); 
             } else {
-                return rotarDerecha_Izquierda(nodo); // Rotación Doble
+                return rotarDerecha_Izquierda(nodo); 
             }
         }
 
