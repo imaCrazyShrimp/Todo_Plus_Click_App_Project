@@ -341,7 +341,6 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
     }//GEN-LAST:event_txtCategoriaActionPerformed
 
     private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
-        // obtener los datos de los campos
         String codigoTexto = txtCodigo.getText().trim();
         String nombre = txtNombre.getText().trim();
         String descripcion = txtDescripcion.getText().trim();
@@ -350,7 +349,6 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
         String categoria = txtCategoria.getText().trim();
         String marca = txtMarca.getText().trim();
 
-        // validar campos vacíos
         if (codigoTexto.isEmpty() || nombre.isEmpty() || descripcion.isEmpty()
                 || precioTexto.isEmpty() || color.isEmpty()
                 || categoria.isEmpty() || marca.isEmpty()) {
@@ -361,7 +359,6 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
             return;
         }
 
-        // validar que codigo sea número entero
         int codigo;
         try {
             codigo = Integer.parseInt(codigoTexto);
@@ -373,7 +370,6 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
             return;
         }
 
-        // validar que precio sea número decimal
         double precio;
         try {
             precio = Double.parseDouble(precioTexto);
@@ -385,10 +381,8 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
             return;
         }
 
-        // crear el producto
         producto p = new producto(codigo, nombre, descripcion, precio, color, categoria, marca);
 
-        // insertar en el árbol
         Nodo resultado = arbol.insertar(p);
         if (resultado == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -398,14 +392,12 @@ public class PanelRegistrarProducto extends javax.swing.JPanel {
             return;
         }
 
-        // insertar en la base de datos
         boolean guardado = dao.insertar(p);
         if (guardado) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Producto insertado correctamente.",
                     "Exito",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            // limpiar campos
             txtCodigo.setText("");
             txtNombre.setText("");
             txtDescripcion.setText("");

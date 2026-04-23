@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class persistenciaDAO {
 
-    //metodo para insertar un producto 
     public boolean insertar(producto p) {
         String sql = "INSERT INTO productos VALUES (?,?,?,?,?,?,?)";
         try {
@@ -30,7 +29,6 @@ public class persistenciaDAO {
         }
     }
 
-    //metodo para buscar por el codigo 
     public producto buscar(int codigo) {
         String sql = "SELECT * FROM productos WHERE codigo = ?";
         try {
@@ -57,19 +55,16 @@ public class persistenciaDAO {
         return null;
     }
 
-    //Cargar todos los producto para inicial con el arbol
     public producto[] cargarTodos() {
         String sql = "SELECT * FROM productos";
         producto[] lista = new producto[0];
         try {
             Connection con = Conexion.obtenerConexion();
             PreparedStatement ps = con.prepareStatement(sql,
-                    //sirve para recorrer los datos del inicio hata el ultimo
                     ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = ps.executeQuery();
 
-            //contea cuantos hay 
             rs.last();
             int total = rs.getRow();
             rs.beforeFirst();
@@ -94,7 +89,6 @@ public class persistenciaDAO {
         return lista;
     }
 
-    //metodo para editar o actualizar
     public boolean editar(producto p) {
         String sql = "UPDATE productos SET nombre=?, descripcion=?, precio=?, color=?, categoria=?, marca =? WHERE codigo=?";
         try {
@@ -116,7 +110,6 @@ public class persistenciaDAO {
         return false;
     }
 
-    //metodo para eliminar 
     public boolean eliminar(int codigo) {
         String sql = "DELETE FROM productos WHERE codigo=?";
         try {
@@ -132,7 +125,6 @@ public class persistenciaDAO {
         return false;
     }
 
-    // metodo para buscar por nombre
     public producto[] buscarPorNombre(String nombre) {
         String sql = "SELECT * FROM productos WHERE nombre LIKE ?";
         producto[] lista = new producto[0];

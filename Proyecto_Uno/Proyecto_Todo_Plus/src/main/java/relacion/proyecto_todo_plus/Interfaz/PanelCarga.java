@@ -77,7 +77,7 @@ public class PanelCarga extends javax.swing.JPanel {
     private void btncargar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargar2ActionPerformed
           btncargar2.setEnabled(false);
     barraProgreso2.setValue(0);
-    barraProgreso2.setStringPainted(true); // muestra el % en la barra
+    barraProgreso2.setStringPainted(true); 
 
     relacion.proyecto_todo_plus.conexionBD.persistenciaDAO dao =
         new relacion.proyecto_todo_plus.conexionBD.persistenciaDAO();
@@ -88,30 +88,26 @@ public class PanelCarga extends javax.swing.JPanel {
 
         @Override
         protected Void doInBackground() throws Exception {
-            // 1. Traer todos los productos de la BD
             relacion.proyecto_todo_plus.arbolBinario.producto[] productos = dao.cargarTodos();
 
             if (productos.length == 0) {
-                publish(100); // barra llena aunque no haya nada
+                publish(100); 
                 return null;
             }
 
-            // 2. Insertar uno por uno en el árbol y publicar progreso
             for (int i = 0; i < productos.length; i++) {
                 arbol.insertar(productos[i]);
 
-                // calcula porcentaje real basado en cuántos llevamos
                 int porcentaje = (int) ((i + 1) * 100.0 / productos.length);
                 publish(porcentaje);
 
-                Thread.sleep(40); // pequeña pausa para que se vea el movimiento
+                Thread.sleep(40); 
             }
             return null;
         }
 
         @Override
         protected void process(java.util.List<Integer> chunks) {
-            // chunks puede traer varios valores acumulados, tomamos el último
             int valor = chunks.get(chunks.size() - 1);
             barraProgreso2.setValue(valor);
         }

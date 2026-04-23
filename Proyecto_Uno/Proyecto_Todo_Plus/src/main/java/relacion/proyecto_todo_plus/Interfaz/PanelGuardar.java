@@ -85,7 +85,6 @@ public class PanelGuardar extends javax.swing.JPanel {
     relacion.proyecto_todo_plus.arbolBinario.arbolBinario arbol =
         relacion.proyecto_todo_plus.arbolBinario.ArbolCompartido.getArbol();
 
-    // Contar nodos del árbol antes de lanzar el worker
     final int[] totalNodos = {0};
     contarNodos(arbol.getRaiz(), totalNodos);
 
@@ -99,19 +98,16 @@ public class PanelGuardar extends javax.swing.JPanel {
 
     javax.swing.SwingWorker<Void, Integer> worker = new javax.swing.SwingWorker<Void, Integer>() {
 
-        // Contador compartido dentro del worker
         int procesados = 0;
 
         @Override
         protected Void doInBackground() throws Exception {
-            // Saber qué códigos ya existen en BD
             relacion.proyecto_todo_plus.arbolBinario.producto[] enBD = dao.cargarTodos();
             java.util.Set<Integer> codigosEnBD = new java.util.HashSet<>();
             for (relacion.proyecto_todo_plus.arbolBinario.producto p : enBD) {
                 codigosEnBD.add(p.getCodigo());
             }
 
-            // Recorrer árbol inorden y sincronizar con BD
             sincronizarNodo(arbol.getRaiz(), dao, codigosEnBD, totalNodos[0]);
             return null;
         }
@@ -128,15 +124,15 @@ public class PanelGuardar extends javax.swing.JPanel {
 
             relacion.proyecto_todo_plus.arbolBinario.producto p = nodo.getProd();
             if (codigosEnBD.contains(p.getCodigo())) {
-                dao.editar(p);    // ya existe → actualizar
+                dao.editar(p);   
             } else {
-                dao.insertar(p);  // nuevo → insertar
+                dao.insertar(p); 
             }
 
             procesados++;
             int porcentaje = (int) (procesados * 100.0 / total);
             publish(porcentaje);
-            Thread.sleep(40); // pausa para que se vea el movimiento
+            Thread.sleep(40); 
 
             sincronizarNodo(nodo.getDcha(), dao, codigosEnBD, total);
         }
@@ -159,7 +155,6 @@ public class PanelGuardar extends javax.swing.JPanel {
     worker.execute();
 }
 
-// Método auxiliar para contar nodos del árbol
 private void contarNodos(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo, int[] contador) {
     if (nodo == null) return;
     contador[0]++;

@@ -137,7 +137,6 @@ private void verArbol() {
         return;
     }
 
-    // Crear ventana con el panel gráfico
     javax.swing.JFrame ventana = new javax.swing.JFrame("Árbol AVL - Visualización");
     ventana.setSize(1000, 700);
     ventana.setLocationRelativeTo(null);
@@ -149,19 +148,16 @@ private void verArbol() {
     ventana.setVisible(true);
 }
 
-// ─── Clase interna que dibuja el árbol ───────────────────────────────────────
 private class PanelArbol extends javax.swing.JPanel {
 
     private relacion.proyecto_todo_plus.arbolBinario.Nodo raiz;
 
-    // Tamaño del círculo de cada nodo
     private static final int RADIO     = 28;
     private static final int DIAMETRO  = RADIO * 2;
 
     public PanelArbol(relacion.proyecto_todo_plus.arbolBinario.Nodo raiz) {
         this.raiz = raiz;
         setBackground(new java.awt.Color(240, 255, 255));
-        // Calcular altura para ajustar tamaño del panel
         int altura = calcularAltura(raiz);
         int anchoPanel = (int) Math.pow(2, altura) * (DIAMETRO + 20);
         int altoPanel  = altura * 100 + 80;
@@ -175,7 +171,6 @@ private class PanelArbol extends javax.swing.JPanel {
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-        // Antialiasing para que se vea suave
         g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
                             java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -191,7 +186,6 @@ private class PanelArbol extends javax.swing.JPanel {
 
         int siguienteY = y + 90;
 
-        // Dibujar línea al hijo izquierdo
         if (nodo.getIzq() != null) {
             g.setColor(new java.awt.Color(100, 100, 100));
             g.setStroke(new java.awt.BasicStroke(2));
@@ -199,7 +193,6 @@ private class PanelArbol extends javax.swing.JPanel {
             dibujarNodo(g, nodo.getIzq(), x - offset, siguienteY, offset / 2);
         }
 
-        // Dibujar línea al hijo derecho
         if (nodo.getDcha() != null) {
             g.setColor(new java.awt.Color(100, 100, 100));
             g.setStroke(new java.awt.BasicStroke(2));
@@ -207,31 +200,26 @@ private class PanelArbol extends javax.swing.JPanel {
             dibujarNodo(g, nodo.getDcha(), x + offset, siguienteY, offset / 2);
         }
 
-        // Color del nodo según balance
         int fe = calcularFE(nodo);
         java.awt.Color colorNodo;
         if (fe == 0) {
-            colorNodo = new java.awt.Color(0, 180, 100);      // verde = perfectamente balanceado
+            colorNodo = new java.awt.Color(0, 180, 100);    
         } else if (Math.abs(fe) == 1) {
-            colorNodo = new java.awt.Color(30, 120, 220);     // azul = ligeramente desbalanceado
+            colorNodo = new java.awt.Color(30, 120, 220);     
         } else {
-            colorNodo = new java.awt.Color(220, 50, 50);      // rojo = desbalanceado (no debería pasar en AVL)
+            colorNodo = new java.awt.Color(220, 50, 50);      
         }
 
-        // Sombra
         g.setColor(new java.awt.Color(0, 0, 0, 50));
         g.fillOval(x - RADIO + 3, y - RADIO + 3, DIAMETRO, DIAMETRO);
 
-        // Círculo del nodo
         g.setColor(colorNodo);
         g.fillOval(x - RADIO, y - RADIO, DIAMETRO, DIAMETRO);
 
-        // Borde del círculo
         g.setColor(java.awt.Color.WHITE);
         g.setStroke(new java.awt.BasicStroke(2));
         g.drawOval(x - RADIO, y - RADIO, DIAMETRO, DIAMETRO);
 
-        // Código del producto dentro del círculo
         g.setColor(java.awt.Color.WHITE);
         g.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         String texto = String.valueOf(nodo.getProd().getCodigo());
@@ -240,7 +228,6 @@ private class PanelArbol extends javax.swing.JPanel {
         int textoY = y + fm.getAscent() / 2 - 1;
         g.drawString(texto, textoX, textoY);
 
-        // Factor de equilibrio debajo del círculo (pequeño)
         g.setColor(new java.awt.Color(60, 60, 60));
         g.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 10));
         String fe_texto = "FE:" + fe;
@@ -248,7 +235,6 @@ private class PanelArbol extends javax.swing.JPanel {
         g.drawString(fe_texto, feX, y + RADIO + 14);
     }
 
-    // Calcula el factor de equilibrio de un nodo
    private int calcularFE(relacion.proyecto_todo_plus.arbolBinario.Nodo nodo) {
     return alturaDeNodo(nodo.getDcha()) - alturaDeNodo(nodo.getIzq());
 }
